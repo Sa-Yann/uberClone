@@ -4,7 +4,7 @@ import { View, Text } from 'react-native'
 const EatsScreen = () => {
     return (
         <View>
-            <Text>EatsScreen</Text>
+            <Text>I am the Eats Screen</Text>
         </View>
     )
 }
