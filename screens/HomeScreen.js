@@ -4,11 +4,12 @@ import tw from 'tailwind-react-native-classnames';
 import NavOptions from '../components/NavOptions';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { GOOGLE_MAPS_APIKEY } from '@env';
-import { useDispatch } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { setDestination, setOrigin } from '../sliceReducer/navSliceRdcr';
 
 const HomeScreen = () => {
-const dispatch = useDispatch()
+
+    const dispatch = useDispatch();
 
     return (
         <SafeAreaView style={ tw`bg-white h-full`}> 
@@ -31,6 +32,7 @@ const dispatch = useDispatch()
                                     fontSize: 18,
                                 }
                             }}
+                            fetchDetails={true}
                             onPress={(data, details = null) => {
                                 console.log("🚀 ~ file: HomeScreen.js ~ line 32 ~ HomeScreen ~ details", details);
                                 console.log("🚀 ~ file: HomeScreen.js ~ line 32 ~ HomeScreen ~ data", data) ;
@@ -41,7 +43,6 @@ const dispatch = useDispatch()
                                 dispatch(setDestination(null))
                             }}
                             listViewDisplayed='auto'
-                            fetchDetails={true}
                             returnKeyType={'search'}
                             enablePoweredByContainer={false}
                             minLength={2}

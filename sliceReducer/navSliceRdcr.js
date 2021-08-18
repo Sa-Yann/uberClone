@@ -12,7 +12,7 @@ export const navSlice =  createSlice({
     reducers: {
         // when I dispacth the action setOrigine I update the state of orgine with the action payload
         setOrigin: (state, action) => {
-            state.origine = action.payload;
+            state.origin = action.payload;
         },
         setDestination: (state, action) => {
             state.destination = action.payload;
