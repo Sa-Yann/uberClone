@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { selectOrigin } from '../sliceReducer/navSliceRdcr';
 
 
-const data = [
+const dataInfo = [
     {
         id: '1234',
         title: 'Get a ride',
@@ -27,7 +27,7 @@ const NavOptions = () => {
     const origin = useSelector(selectOrigin);
     return (
         <FlatList
-            data={data}
+            data={dataInfo}
             horizontal
             keyExtractor={(item )=> item.id}
             renderItem={({item}) => (
