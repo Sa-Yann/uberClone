@@ -1,20 +1,30 @@
 import React from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import Map from '../components/Map';
 import NavigateCard from '../components/NavigateCard';
 import RideOptionsCard from '../components/RideOptionsCard';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Icon } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/core';
 // import 'react-native-gesture-handler';
 
 
 
 const MapScreen = () => {
 
-    const Stack = createStackNavigator()
+    const Stack = createStackNavigator();
+    const navigation = useNavigation();
 
     return (
         <View>
+            <TouchableOpacity 
+            style={tw`absolute top-16 bg-gray-100 left-8 z-50 p-3 rounded-full shadow-lg`}
+            // onPress={() => navigation.navigate("HomeScreen")}
+            onPress={() => navigation.navigate("HomeScreen")}
+            >
+                <Icon name="menu"/>
+            </TouchableOpacity>
             {/* <Text>I am the Map Screen</Text> */}
             <View style={tw`h-1/2`}>
                 <Map/>

@@ -10,13 +10,13 @@ const NavFavorites = () => {
             id: '123',
             icon: 'home',
             location: 'home',
-            destination: "Code Street, London, UK",
+            destination: "5 rue du Colonel Oudot, Paris 12, Fr",
         },
         {
             id: '456',
             icon: 'briefcase',
             location: 'Work',
-            destination: "CLondon Eye, London, UK",
+            destination: "10 rue du Cobert, Paris 10, Fr",
         },
     ]
     return (

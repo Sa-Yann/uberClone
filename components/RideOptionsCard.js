@@ -3,6 +3,8 @@ import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Image
 import { useNavigation } from '@react-navigation/core';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import tw from 'tailwind-react-native-classnames';
+import { useSelector } from 'react-redux';
+import { selectTravelTimeInfos } from '../sliceReducer/navSliceRdcr';
 
 
 
@@ -32,7 +34,11 @@ const RideOptionsCard = () => {
 
     const navigation = useNavigation();
 
-    const [selected, setSelected] = useState()
+    const [selected, setSelected] = useState();
+
+    const travelTimeInformation = useSelector(selectTravelTimeInfos);
+
+    const SURGE_CHARGE_RATE = 1.5;
 
     return (
         <SafeAreaView style={ tw`bg-white flex-grow`}>
@@ -42,7 +48,9 @@ const RideOptionsCard = () => {
                     style={tw`absolute top-3 left-5 z-50 p-3 rounded-full`}>
                     <Icon name="chevron-left" type="fontawesome"/>
                 </TouchableOpacity>
-                <Text style={tw`text-center py-5 text-xl`}>Select a Ride</Text>
+                <Text style={tw`text-center py-5 text-xl`}>
+                    Select a Ride - {travelTimeInformation?.distance?.text}
+                </Text>
             </View>
             <FlatList
                 data={dataUberCarTypes}
@@ -68,20 +76,30 @@ const RideOptionsCard = () => {
                         />
                         <View style={tw`-ml-6`}>
                             <Text style={tw`text-xl font-semibold`}>{item.title}</Text>
-                            <Text>Travel Time</Text>
+                            <Text>Duration:{' '}{travelTimeInformation?.duration?.text}</Text>
                         </View>
-                        <Text style={tw`text-xl`}>99€</Text>
+                        <Text style={tw`text-xl`}>
+                            {new Intl.NumberFormat('en-gb', {
+                                style: 'currency',
+                                currency: 'EUR',
+                            }).format(
+                                (travelTimeInformation?.duration?.value
+                                    * SURGE_CHARGE_RATE 
+                                    * multiplier) / 100
+                            )}
+                        </Text>
                     </TouchableOpacity>
                 )}
 
             
             />
+            {/* <View style={tw`mt-auto border-t border-gray-200`}> */}
             <View>
                 <TouchableOpacity 
                 disabled={!selected}
                 style={tw`bg-black ${!selected && "bg-gray-300"}`}
                 >
-                    <Text style={tw`text-center text-white text-xl py-3 m-3 ${!selected && "bg-gray-300 text-gray-300"}`}>Choosen Car:{' '}{selected?.title}</Text>
+                    <Text style={tw`text-center text-white text-xl px-3 m-3 ${!selected && "bg-gray-300 text-gray-300"}`}>Choosen Car:{' '}{selected?.title}</Text>
                 </TouchableOpacity>
             </View>
         </SafeAreaView>

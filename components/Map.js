@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import tw from 'tailwind-react-native-classnames';
-import { selectDestination, selectOrigin } from '../sliceReducer/navSliceRdcr';
+import { selectDestination, selectOrigin, setTravelTimeInfos } from '../sliceReducer/navSliceRdcr';
 import { GOOGLE_MAPS_APIKEY } from '@env';
 
 const Map = () => {
@@ -13,17 +13,40 @@ const Map = () => {
     const destination = useSelector(selectDestination)
     const mapReference = useRef(null)
 
+    const dispatch = useDispatch()
+
     useEffect(( ) => {
-        if(!origin || !destination ) return; // if no origin and destination dont render the following code
+        if(!origin || !destination ) return; // if no origin and/or no  destination no action
         //Zoom and fit to the markers
         mapReference.current.fitToSuppliedMarkers(['origin', 'destination'],{
             // edgePadding: 25,
             edgePadding: { top: 50, right: 50, left: 70, bottom: 50},
         })
     }, [origin, destination, mapReference])
+    // re rendering the page if orgin, destination or mapReference evolve
+
+
+    useEffect(() => {
+        if(!origin || !destination ) return;
+
+        const getTravelTime = async() => {
+            const URL = fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.description}&destinations=${destination.description}&key=${GOOGLE_MAPS_APIKEY}`)
+            .then((res) => res.json())
+            .then(data => {
+                // console.log("🚀 ~ file: Map.js ~ line 35 ~ getTravelTime ~ data", data);
+                // dispatching the travel time from data
+                dispatch(setTravelTimeInfos(data.rows[0].elements[0]));
+            })
+        };
+
+        getTravelTime();
+    }
+        
+    ),[origin, destination, GOOGLE_MAPS_APIKEY]
 
     return (
         <MapView
+        //ef={mapReference} to attache the useRef to the MapView Component
         ref={mapReference}
         style={tw`flex-1`}
         mapType="mutedStandard"
@@ -61,7 +84,7 @@ const Map = () => {
                 longitude: destination.location.lng,
               }}
               title="Destination"
-              description={origin.description}
+              description={destination.description}
               identifier="destination"
               />
           )}
